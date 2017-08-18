@@ -1,0 +1,5 @@
+*.so
+*.zip
+build
+.DS_Store
+debug.test

@@ -1,0 +1,28 @@
+service: rtn-updater
+
+package:
+  artifact: handler.zip
+
+provider:
+  name: aws
+  runtime: python2.7
+  region: us-west-2
+  stage: ${env:NODE_ENV}
+  cfLogs: true
+  timeout: 20
+  memorySize: 128
+  environment:
+    NODE_ENV: ${env:NODE_ENV}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+        - s3:PutObject
+        - s3:PutObjectAcl
+      Resource: "*"
+
+functions:
+  cronJob:
+    handler: handler.Handle
+    events:
+      - schedule: cron(15 7 * * ? *)
